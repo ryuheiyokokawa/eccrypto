@@ -5,7 +5,8 @@
 "use strict";
 
 var secp256k1 = require("secp256k1");
-var ecdh = require("./build/Release/ecdh.node");
+var EC = require('elliptic').ec;
+var ec = new EC('secp256k1');
 
 var promise = typeof Promise === "undefined" ?
               require("es6-promise").Promise :
@@ -124,8 +125,20 @@ exports.verify = function(publicKey, msg, sig) {
  * shared secret (Px, 32 bytes) and rejects on bad key.
  */
 var derive = exports.derive = function(privateKeyA, publicKeyB) {
-  return new promise(function(resolve) {
-    resolve(ecdh.derive(privateKeyA, publicKeyB));
+  return new promise(function(resolve,reject) {
+    if(!privateKeyA || !publicKeyB) {
+      reject(new Error('bad input'))
+    } else if( privateKeyA.length != 32 || publicKeyB.length != 65 ){
+      reject(new Error('bad input'))
+    } else if( !Buffer.isBuffer(privateKeyA) || !Buffer.isBuffer(publicKeyB) ){
+      reject(new Error('bad input'))
+    } else {
+      var privateKey = ec.keyFromPrivate(privateKeyA, 'hex')
+      var publicKey = ec.keyFromPublic(publicKeyB, 'hex')
+      var derivedJS = privateKey.derive( publicKey.getPublic() )
+      var derived = derivedJS.toBuffer()
+      resolve(derived);
+    }
   });
 };
 
