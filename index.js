@@ -9,9 +9,5 @@
 try {
   module.exports = require("./node");
 } catch (e) {
-  if (process.env.ECCRYPTO_NO_FALLBACK) {
-    throw e;
-  } else {
-    module.exports = require("./browser");
-  }
+  console.log(e)
 }
