@@ -46,7 +46,7 @@
     "karma-mocha": "^0.2.0",
     "karma-mocha-reporter": "^1.0.2",
     "mocha": "*",
-    "secp256k1": "^2.0.4"
+    "secp256k1": "^3.5.2"
   },
   "dependencies": {
     "elliptic": "^6.4.1",
