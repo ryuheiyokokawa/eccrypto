@@ -3,8 +3,8 @@
  */
 
 "use strict";
-
-var secp256k1 = require("./node_modules/secp256k1/build/Release/secp256k1.node");
+var path = require('path')
+var secp256k1 = require(path.resolve(__dirname , "node_modules/secp256k1/build/Release/secp256k1.node"));
 var EC = require('elliptic').ec;
 var ec = new EC('secp256k1');
 
